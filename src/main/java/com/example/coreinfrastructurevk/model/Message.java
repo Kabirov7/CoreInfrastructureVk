@@ -37,6 +37,12 @@ public class Message {
         this.text = text;
     }
 
+    public Message(Message message) {
+        this.from = message.getFrom();
+        this.target = message.getTarget();
+        this.text = message.getText();
+    }
+
 
     public Long getId() {
         return id;
@@ -68,5 +74,13 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
