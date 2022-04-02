@@ -9,25 +9,15 @@ import java.util.Date;
 
 public class MessageCreateDto implements Serializable {
 
-    String sender;
     String target;
     String text;
 
-    public MessageCreateDto(String sender, String target, String text) {
-        this.sender = sender;
+    public MessageCreateDto(String target, String text) {
         this.target = target;
         this.text = text;
     }
 
     public MessageCreateDto() {
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
     }
 
     public String getTarget() {

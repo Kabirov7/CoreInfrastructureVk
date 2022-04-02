@@ -10,9 +10,11 @@ import com.example.coreinfrastructurevk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +29,15 @@ public class MessageController {
     private UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<MessageDto> allMessages() {
+    public ResponseEntity<MessageDto> allMessages(Authentication authentication) {
         List<Message> messages = this.messageService.getAll();
         return new ResponseEntity(messages.stream().map(m -> MessageMapper.INSTANCE.toDto(m)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<MessageDto> createMessage(@RequestBody @Valid MessageCreateDto message) {
-        Optional<User> sender = userService.findByEmail(message.getSender());
+    public ResponseEntity<MessageDto> createMessage(@RequestBody @Valid MessageCreateDto message,
+                                                    Principal principal) {
+        Optional<User> sender = userService.findByEmail(principal.getName());
         Optional<User> target = userService.findByEmail(message.getTarget());
         Message newMessage = new Message();
         newMessage.setSender(sender.get());
