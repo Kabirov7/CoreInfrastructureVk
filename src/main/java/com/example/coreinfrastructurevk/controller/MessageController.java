@@ -1,9 +1,12 @@
 package com.example.coreinfrastructurevk.controller;
 
+import com.example.coreinfrastructurevk.dto.MessageCreateDto;
 import com.example.coreinfrastructurevk.dto.MessageDto;
 import com.example.coreinfrastructurevk.mapper.MessageMapper;
 import com.example.coreinfrastructurevk.model.Message;
+import com.example.coreinfrastructurevk.model.User;
 import com.example.coreinfrastructurevk.service.MessageService;
+import com.example.coreinfrastructurevk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080/")
 @RestController
@@ -19,6 +23,9 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<MessageDto> allMessages() {
         List<Message> messages = this.messageService.getAll();
@@ -26,9 +33,18 @@ public class MessageController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Message> createMessage(@RequestBody @Valid Message message) {
-        this.messageService.save(message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+    public ResponseEntity<MessageDto> createMessage(@RequestBody @Valid MessageCreateDto message) {
+        Optional<User> sender = userService.findByEmail(message.getSender());
+        Optional<User> target = userService.findByEmail(message.getTarget());
+        Message newMessage = new Message();
+        newMessage.setSender(sender.get());
+        newMessage.setTarget(target.get());
+        newMessage.setText(message.getText());
+        messageService.save(newMessage);
+
+        MessageDto messageDto = MessageMapper.INSTANCE.toDto(newMessage);
+
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
