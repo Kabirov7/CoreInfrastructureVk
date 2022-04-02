@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080/")
 @RestController
-@RequestMapping("/api/v1/messages/")
+@RequestMapping("/messages")
 public class MessageController {
     @Autowired
     private MessageService messageService;

@@ -32,11 +32,14 @@ public class Message {
     @JoinColumn(name = "target")
     private User target;
 
-    public Message(String text, LocalDateTime createdAt, User sender, User target) {
+    private EMessageStatus messageStatus;
+
+    public Message(String text, LocalDateTime createdAt, User sender, User target, EMessageStatus mStatus) {
         this.text = text;
         this.createdAt = createdAt;
         this.sender = sender;
         this.target = target;
+        this.messageStatus = mStatus;
     }
 
     public Message() {
