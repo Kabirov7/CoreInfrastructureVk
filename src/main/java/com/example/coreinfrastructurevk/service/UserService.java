@@ -3,6 +3,7 @@ package com.example.coreinfrastructurevk.service;
 import com.example.coreinfrastructurevk.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     User getById(Long id);
@@ -13,5 +14,11 @@ public interface UserService {
 
     List<User> getAll();
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByUsername(String Username);
+
+    Boolean existsByEmail(String email);
+
+    Boolean existsByUsername(String username);
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080/")
@@ -33,7 +34,7 @@ public class UserController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
-        User u = userService.getById(id);
+        User u = this.userService.getById(id);
         return new ResponseEntity<>(UserMapper.INSTANCE.toDto(u), HttpStatus.OK);
     }
 

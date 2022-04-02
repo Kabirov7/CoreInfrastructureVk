@@ -5,15 +5,13 @@ import java.io.Serializable;
 public class UserDto implements Serializable {
     Long id;
     String email;
-    Long name;
 
     public UserDto() {
     }
 
-    public UserDto(Long id, String email, Long name) {
+    public UserDto(Long id, String email) {
         this.id = id;
         this.email = email;
-        this.name = name;
     }
 
     public Long getId() {
@@ -32,11 +30,4 @@ public class UserDto implements Serializable {
         this.email = email;
     }
 
-    public Long getName() {
-        return name;
-    }
-
-    public void setName(Long name) {
-        this.name = name;
-    }
 }

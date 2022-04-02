@@ -1,9 +1,14 @@
 package com.example.coreinfrastructurevk.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -16,17 +21,25 @@ public class User {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "name", nullable = false)
-    private String name;
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
+    @Column(name = "username", nullable = false)
+    private String username;
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "user_role"
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
     public User() {}
 
-    public User(String email, String name) {
+    public User(String email, String username, String password) {
         this.email = email;
-        this.name = name;
+        this.username = username;
+        this.password = password;
     }
 
 
@@ -46,12 +59,12 @@ public class User {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public String getPassword() {
@@ -62,11 +75,19 @@ public class User {
         this.password = password;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

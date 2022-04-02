@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service("userService")
+@Service
 public class UserServiceImplementation implements UserService{
     @Autowired
     UserRepository userRepository;
+
     @Override
     public User getById(Long id) {
         return userRepository.getById(id);
@@ -28,7 +30,22 @@ public class UserServiceImplementation implements UserService{
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }
