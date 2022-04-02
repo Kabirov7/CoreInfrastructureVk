@@ -48,4 +48,13 @@ public class UserServiceImplementation implements UserService{
     public Boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    @Override
+    public List<User> getFriends(User user) {
+        return userRepository.findAllByFriendsContains(user);
+    }
+    @Override
+    public List<User> getNotFriends(User user) {
+        return userRepository.findAllByFriendsNotContains(user);
+    }
 }

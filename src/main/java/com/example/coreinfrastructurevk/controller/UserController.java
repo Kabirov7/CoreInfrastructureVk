@@ -27,6 +27,20 @@ public class UserController {
         return new ResponseEntity(users.stream().map(u -> UserMapper.INSTANCE.toDto(u)), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/friends", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> getAllFriends(Principal principal) {
+        Optional<User> user = this.userService.findByEmail(principal.getName());
+        List<User> users = this.userService.getFriends(user.get());
+        return new ResponseEntity(users.stream().map(u -> UserMapper.INSTANCE.toDto(u)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/not_friends", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> getAllNotFriends(Principal principal) {
+        Optional<User> user = this.userService.findByEmail(principal.getName());
+        List<User> users = this.userService.getNotFriends(user.get());
+        return new ResponseEntity(users.stream().map(u -> UserMapper.INSTANCE.toDto(u)), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
         this.userService.save(user);

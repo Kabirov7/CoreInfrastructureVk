@@ -21,4 +21,8 @@ public interface UserService {
     Boolean existsByEmail(String email);
 
     Boolean existsByUsername(String username);
+
+    List<User> getFriends(User user);
+
+    List<User> getNotFriends(User user);
 }
