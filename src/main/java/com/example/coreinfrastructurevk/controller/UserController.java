@@ -53,7 +53,7 @@ public class UserController {
         return new ResponseEntity<>(UserMapper.INSTANCE.toDto(u), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}/addfriend", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}/add_friend", method = RequestMethod.GET)
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, Principal principal) {
         Optional<User> currentUser = userService.findByEmail(principal.getName());
         User u = this.userService.getById(id);
