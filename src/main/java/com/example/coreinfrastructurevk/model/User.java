@@ -30,16 +30,19 @@ public class User {
     private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_role"
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @JoinTable(name = "user_role")
     private List<Role> roles;
 
-//    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-//    private List<Message> messages;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "friends",
+            joinColumns = @JoinColumn(name = "user_user"),
+            inverseJoinColumns = @JoinColumn(name = "user_friend"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_user", "user_friend"})
+    )
+    private List<User> friends;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String email, String username, String password) {
         this.email = email;
@@ -47,4 +50,7 @@ public class User {
         this.password = password;
     }
 
+    public void addFriend(User u) {
+        this.friends.add(u);
+    }
 }

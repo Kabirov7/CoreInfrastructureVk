@@ -10,8 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080/")
 @RestController
@@ -35,6 +36,15 @@ public class UserController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
         User u = this.userService.getById(id);
+        return new ResponseEntity<>(UserMapper.INSTANCE.toDto(u), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{id}/addfriend", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, Principal principal) {
+        Optional<User> currentUser = userService.findByEmail(principal.getName());
+        User u = this.userService.getById(id);
+        u.addFriend(currentUser.get());
+        userService.save(u);
         return new ResponseEntity<>(UserMapper.INSTANCE.toDto(u), HttpStatus.OK);
     }
 
