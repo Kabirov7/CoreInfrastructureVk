@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface MessageMapper {
     MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
 
-    @Mapping(source="message.sender", target="sender")
-    @Mapping(source="message.target", target="target")
+    @Mapping(source="sender", target="sender")
+    @Mapping(source="target", target="target")
     MessageDto toDto(Message message);
 }

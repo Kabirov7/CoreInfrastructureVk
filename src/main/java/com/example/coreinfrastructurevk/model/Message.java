@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
-@Getter
-@Setter
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +42,53 @@ public class Message {
 
     public Message() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getTarget() {
+        return target;
+    }
+
+    public void setTarget(User target) {
+        this.target = target;
+    }
+
+    public EMessageStatus getMessageStatus() {
+        return messageStatus;
+    }
+
+    public void setMessageStatus(EMessageStatus messageStatus) {
+        this.messageStatus = messageStatus;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.coreinfrastructurevk.controller;
 
 import com.example.coreinfrastructurevk.dto.MessageCreateDto;
+import com.example.coreinfrastructurevk.mapper.MessageMapper;
 import com.example.coreinfrastructurevk.model.Message;
 import com.example.coreinfrastructurevk.service.MessageService;
 import com.example.coreinfrastructurevk.service.UserService;
@@ -30,24 +31,20 @@ public class ChatController {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat")
-    public void processMessage(@RequestBody @Valid MessageCreateDto message,
-                               Principal principal) {
-        if (principal != null) {
-            var sender = userService.findByEmail(principal.getName());
-            var target = userService.findByEmail(message.getTarget());
+    public void processMessage(@RequestBody @Valid MessageCreateDto message) {
+        var sender = userService.findByEmail(message.getSender());
+        var target = userService.findByEmail(message.getTarget());
 
-            Message newMessage = new Message();
-            newMessage.setSender(sender.get());
-            newMessage.setTarget(target.get());
-            newMessage.setText(message.getText());
-            messageService.save(newMessage);
-
+        Message newMessage = new Message();
+        newMessage.setSender(sender.get());
+        newMessage.setTarget(target.get());
+        newMessage.setText(message.getText());
+        messageService.save(newMessage);
 
 //        return new ResponseEntity<>(messageDto, HttpStatus.OK);
-            messagingTemplate.convertAndSendToUser(
-                    sender.get().getId().toString(), "/queue/messages",
-                    newMessage
-            );
-        }
+        messagingTemplate.convertAndSendToUser(
+                sender.get().getId().toString(), "/queue/messages",
+                MessageMapper.INSTANCE.toDto(newMessage)
+        );
     }
 }
