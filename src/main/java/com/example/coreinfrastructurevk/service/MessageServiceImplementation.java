@@ -1,6 +1,7 @@
 package com.example.coreinfrastructurevk.service;
 
 import com.example.coreinfrastructurevk.model.Message;
+import com.example.coreinfrastructurevk.model.User;
 import com.example.coreinfrastructurevk.repository.MessageRepository;
 import com.example.coreinfrastructurevk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class MessageServiceImplementation implements MessageService{
     @Override
     public List<Message> getAll() {
         return messageRepository.findAll();
+    }
+
+    @Override
+    public List<Message> getChat(User sender, User target) {
+        return messageRepository.findAllBySenderAndTargetOrderByCreatedAtAsc(sender, target);
     }
 }

@@ -14,4 +14,6 @@ public interface MessageService {
 
     List<Message> getAll();
 
+    List<Message> getChat(User sender, User target);
+
 }

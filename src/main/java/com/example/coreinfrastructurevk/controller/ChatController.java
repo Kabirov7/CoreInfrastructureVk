@@ -3,6 +3,7 @@ package com.example.coreinfrastructurevk.controller;
 import com.example.coreinfrastructurevk.dto.MessageCreateDto;
 import com.example.coreinfrastructurevk.mapper.MessageMapper;
 import com.example.coreinfrastructurevk.model.Message;
+import com.example.coreinfrastructurevk.model.User;
 import com.example.coreinfrastructurevk.service.MessageService;
 import com.example.coreinfrastructurevk.service.UserService;
 import lombok.var;
@@ -32,19 +33,18 @@ public class ChatController {
 
     @MessageMapping("/chat")
     public void processMessage(@RequestBody @Valid MessageCreateDto message) {
-        var sender = userService.findByEmail(message.getSender());
-        var target = userService.findByEmail(message.getTarget());
 
         Message newMessage = new Message();
-        newMessage.setSender(sender.get());
-        newMessage.setTarget(target.get());
+        newMessage.setSender(userService.getById(message.getSender()));
+        newMessage.setTarget(userService.getById(message.getTarget()));
         newMessage.setText(message.getText());
         messageService.save(newMessage);
 
+        var messageDto = MessageMapper.INSTANCE.toDto(newMessage);
 //        return new ResponseEntity<>(messageDto, HttpStatus.OK);
         messagingTemplate.convertAndSendToUser(
-                sender.get().getId().toString(), "/queue/messages",
-                MessageMapper.INSTANCE.toDto(newMessage)
+                message.getTarget().toString(), "/queue/messages",
+                messageDto
         );
     }
 }

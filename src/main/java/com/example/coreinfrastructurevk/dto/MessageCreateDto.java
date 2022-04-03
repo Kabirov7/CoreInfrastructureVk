@@ -13,8 +13,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class MessageCreateDto implements Serializable {
-    String sender;
-    String target;
+    Long sender;
+    Long target;
     String text;
 
 }
