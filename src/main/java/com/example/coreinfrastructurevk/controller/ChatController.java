@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +33,9 @@ public class ChatController {
     private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat")
-    public void processMessage(@RequestBody @Valid MessageCreateDto message) {
-
+    public void processMessage(@RequestBody @Valid MessageCreateDto message, Principal principal) {
         Message newMessage = new Message();
-        newMessage.setSender(userService.getById(message.getSender()));
+        newMessage.setSender(userService.findByEmail(principal.getName()).get());
         newMessage.setTarget(userService.getById(message.getTarget()));
         newMessage.setText(message.getText());
         messageService.save(newMessage);

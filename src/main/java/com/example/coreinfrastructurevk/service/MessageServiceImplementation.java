@@ -32,6 +32,6 @@ public class MessageServiceImplementation implements MessageService{
 
     @Override
     public List<Message> getChat(User sender, User target) {
-        return messageRepository.findAllBySenderAndTargetOrderByCreatedAtAsc(sender, target);
+        return messageRepository.findAllBySenderAndTargetOrTargetAndSenderOrderByCreatedAtAsc(sender, target, sender, target);
     }
 }

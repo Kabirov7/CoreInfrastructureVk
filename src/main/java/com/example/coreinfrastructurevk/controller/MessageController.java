@@ -41,7 +41,7 @@ public class MessageController {
     }
 
     @GetMapping("chat/{id}")
-    public ResponseEntity<MessageDto> getChat(@PathVariable("id") Long id, Principal principal){
+    public ResponseEntity<MessageDto> getChat(@PathVariable("id") Long id, Principal principal) {
         var sender = userService.findByEmail(principal.getName());
         var reciever = userService.getById(id);
         List<Message> messages = this.messageService.getChat(sender.get(), reciever);

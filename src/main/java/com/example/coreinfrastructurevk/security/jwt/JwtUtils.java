@@ -30,6 +30,7 @@ public class JwtUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
+        token = token.replace("Bearer ", "");
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
